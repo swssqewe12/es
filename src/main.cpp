@@ -1,12 +1,11 @@
-#include <conio.h>
 #include <stdlib.h>
-#include "hstr.h"
+#include <time.h>
 #include "Token.h"
 #include "Lexer.h"
 
-FILE* readFile(const char* src)
+FILE* openFile(const char* src, const char* mode)
 {
-    FILE* file = fopen(src, "r");
+    FILE* file = fopen(src, mode);
 
     if (file == NULL)
     {
@@ -22,29 +21,22 @@ FILE* readFile(const char* src)
 
 int main()
 {
-    printf("Opening file...\n");
-    FILE* file = readFile("res/script.es");
+    time_t start_time, end_time;
+    double diff_time;
 
+    printf("Opening file...\n");
+    FILE* file = openFile("res/script.es", "r");
+
+    time(&start_time);
+    printf("Lexing...\n");
     Lexer lexer(file);
     List<Token>* tokens = lexer.make_tokens();
     fclose(file);
 
-    for (int i = 0; i < tokens->length; i++)
-    {
-        Token* tok = tokens->get(i);
-        printf("Type: ");
-        printf("%s", TokenTypeStrings[(int) tok->type]);
+    time(&end_time);
+    diff_time = difftime(end_time, start_time);
+    printf("DONE. (%fs)", diff_time);
 
-        if (tok->value)
-        {
-            printf("\nValue: ");
-            printf(tok->value);
-        }
-
-        printf("\n\n");
-    }
-
-    getch();
 
     return 0;
 }
