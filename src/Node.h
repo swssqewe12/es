@@ -20,6 +20,7 @@ struct ProgramTree
 
 struct FuncCallNode
 {
+    char* name;
     // Obviously in the future function call nodes will have list of arguments etc, whereas since print is the only current func, there will be only one argument : string
     char* argument;
 };

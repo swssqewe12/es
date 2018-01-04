@@ -15,5 +15,5 @@ class Parser
         size_t tok_index;
         Token* eat(TokenType tok_type);
         ProgramTree* program();
-        List<Statement> statements();
+        void statements(List<Statement>& list);
 };

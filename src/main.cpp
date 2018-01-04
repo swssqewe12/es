@@ -5,6 +5,7 @@
 #include "Lexer.h"
 #include "Node.h"
 #include "Parser.h"
+#include "Interpreter.h"
 
 FILE* openFile(const char* src, const char* mode)
 {
@@ -38,13 +39,15 @@ int main()
 
     printf("Parsing...\n");
     Parser parser(tokens);
-    parser.parse();
+    ProgramTree* tree = parser.parse();
 
     time(&end_time);
     diff_time = difftime(end_time, start_time);
-    printf("DONE. (%fs)", diff_time);
-    printf("----------------");
+    printf("DONE. (%fs)\n", diff_time);
+    printf("------------------\n");
 
+    Interpreter interpreter;
+    interpreter.visit_ProgramTree(tree);
 
     return 0;
 }

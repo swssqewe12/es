@@ -1,5 +1,3 @@
-#include <string.h>
-#include <stdio.h>
 #include "Parser.h"
 
 Parser::Parser(List<Token>* tokens)
@@ -29,14 +27,13 @@ ProgramTree* Parser::parse()
 ProgramTree* Parser::program()
 {
     ProgramTree* tree = new ProgramTree();
-    tree->statements = statements();
+    tree->statements = List<Statement>();
+    statements(tree->statements);
     return tree;
 }
 
-List<Statement> Parser::statements()
+void Parser::statements(List<Statement>& list)
 {
-    List<Statement> statements;
-
     while (tok_index < tokens->length)
     {
         Token* func_tok = eat(ID);
@@ -46,14 +43,13 @@ List<Statement> Parser::statements()
         eat(SEMI);
 
         FuncCallNode* node = new FuncCallNode();
+        node->name     = func_tok->value;
         node->argument = str_tok->value;
 
         Statement* statement = new Statement();
         statement->type = FUNC_CALL;
         statement->node = node;
 
-        statements.push(statement);
+        list.push(statement);
     }
-
-    return statements;
 }
