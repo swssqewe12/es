@@ -1,7 +1,10 @@
 #include <stdlib.h>
 #include <time.h>
+#include "List.h"
 #include "Token.h"
 #include "Lexer.h"
+#include "Node.h"
+#include "Parser.h"
 
 FILE* openFile(const char* src, const char* mode)
 {
@@ -33,9 +36,14 @@ int main()
     List<Token>* tokens = lexer.make_tokens();
     fclose(file);
 
+    printf("Parsing...\n");
+    Parser parser(tokens);
+    parser.parse();
+
     time(&end_time);
     diff_time = difftime(end_time, start_time);
     printf("DONE. (%fs)", diff_time);
+    printf("----------------");
 
 
     return 0;
