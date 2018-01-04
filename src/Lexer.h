@@ -8,7 +8,7 @@ class Lexer
 {
     public:
         Lexer(FILE* file);
-        List<Token>* make_tokens();
+        void make_tokens(List<Token>& tokens);
         char* make_string();
         char* make_identifier();
     private:

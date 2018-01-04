@@ -8,7 +8,7 @@ class List
 {
     private:
         int cap = 0;
-        Type** arr = NULL;
+        Type* arr = NULL;
     public:
         int length;
         int step = 10;
@@ -23,29 +23,32 @@ class List
             this->length = length;
         }
 
-        void push(Type* element)
+        Type* push()
         {
             length++;
 
             if (cap < length)
             {
                 cap += step;
-                arr = (Type**) realloc(arr, cap * sizeof(Type*));
+                arr = (Type*) realloc(arr, cap * sizeof(Type));
             }
 
-            if (arr)
-            {
-                arr[length - 1] = element;
-            }
+            return get(length - 1);
+        }
+
+        void push(Type element)
+        {
+            *push() = element;
         }
 
         Type* get(int index)
         {
-            return arr[index];
+            return arr + index;
         }
 
         ~List()
         {
-            free(arr);
+            if (arr)
+                free(arr);
         }
 };

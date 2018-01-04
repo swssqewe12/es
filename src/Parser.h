@@ -7,11 +7,11 @@
 class Parser
 {
     public:
-        Parser(List<Token>* tokens);
+        Parser(List<Token>& tokens);
         ProgramTree* parse();
     
     private:
-        List<Token>* tokens;
+        List<Token>& tokens;
         size_t tok_index;
         Token* eat(TokenType tok_type);
         ProgramTree* program();

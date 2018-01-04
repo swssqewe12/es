@@ -34,7 +34,8 @@ int main()
     time(&start_time);
     printf("Lexing...\n");
     Lexer lexer(file);
-    List<Token>* tokens = lexer.make_tokens();
+    List<Token> tokens;
+    lexer.make_tokens(tokens);
     fclose(file);
 
     printf("Parsing...\n");
