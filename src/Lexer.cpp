@@ -18,26 +18,26 @@ void Lexer::make_tokens(List<Token>& tokens)
         }
         else if (c == '(')
         {
-            *(tokens.push()) = Token(LPAREN);
+            *(tokens.push()) = Token(LPAREN, ErrInf(0, 0, "test"));
             advance();
         }
         else if (c == ')')
         {
-            *(tokens.push()) = Token(RPAREN);
+            *(tokens.push()) = Token(RPAREN, ErrInf(0, 0, "test"));
             advance();
         }
         else if (c == ';')
         {
-            *(tokens.push()) = Token(SEMI);
+            *(tokens.push()) = Token(SEMI, ErrInf(0, 0, "test"));
             advance();
         }
         else if (c == '"')
         {
-            *(tokens.push()) = Token(STRING, make_string());
+            *(tokens.push()) = Token(STRING, make_string(), ErrInf(0, 0, "test"));
         }
         else if (isalpha(c))
         {
-            *(tokens.push()) = Token(ID, make_identifier());
+            *(tokens.push()) = Token(ID, make_identifier(), ErrInf(0, 0, "test"));
         }
     }
 }

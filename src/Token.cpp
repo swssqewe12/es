@@ -9,14 +9,16 @@ const char* TokenTypeStrings[] = {
     "SEMI"
 };
 
-Token::Token(enum TokenType type, char* value)
+Token::Token(enum TokenType type, char* value, ErrorInfo errinf)
 {
     this->type = type;
     this->value = value;
+    this->errinf = errinf;
 }
 
-Token::Token(enum TokenType type)
+Token::Token(enum TokenType type, ErrorInfo errinf)
 {
     this->type = type;
     this->value = NULL;
+    this->errinf = errinf;
 }

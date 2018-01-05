@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ErrorInfo.h"
+
 enum TokenType
 {
     ID,
@@ -16,7 +18,8 @@ class Token
     public:
         enum TokenType type;
         char* value;
+        ErrorInfo errinf;
 
-        Token(enum TokenType type, char* value);
-        Token(enum TokenType type);
+        Token(enum TokenType type, char* value, ErrorInfo errinf);
+        Token(enum TokenType type, ErrorInfo errinf);
 };

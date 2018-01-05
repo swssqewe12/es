@@ -28,6 +28,8 @@ int main()
     time_t start_time, end_time;
     double diff_time;
 
+    system("@cls||clear");
+    printf("------------------\n");
     printf("Opening file...\n");
     FILE* file = openFile("res/script.es", "r");
 
