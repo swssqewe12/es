@@ -42,8 +42,8 @@ void Parser::statements(List<Statement>& list)
         eat(SEMI);
 
         FuncCallNode* node = new FuncCallNode();
-        node->name     = func_tok->value;
-        node->argument = str_tok->value;
+        node->name     = func_tok;
+        node->argument = str_tok;
 
         Statement* statement = list.push();
         statement->type = FUNC_CALL;

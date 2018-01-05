@@ -21,8 +21,8 @@ void Interpreter::visit_ProgramTree(ProgramTree* tree)
 
 void Interpreter::visit_FuncCallNode(FuncCallNode* node)
 {
-    if (strcmp(node->name, "print") == 0)
+    if (strcmp(node->name->value, "print") == 0)
     {
-        puts(node->argument);
+        puts(node->argument->value);
     }
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Token.h"
+
 #include "List.h"
 
 enum StatementType
@@ -20,7 +22,7 @@ struct ProgramTree
 
 struct FuncCallNode
 {
-    char* name;
+    Token* name;
     // Obviously in the future function call nodes will have list of arguments etc, whereas since print is the only current func, there will be only one argument : string
-    char* argument;
+    Token* argument;
 };
