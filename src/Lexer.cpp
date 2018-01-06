@@ -6,7 +6,7 @@
 Lexer::Lexer(FILE* file)
 {
     this->file = file;
-    this->cur_fn = "script.es";
+    this->cur_fn = "res/script.es";
     this->cur_ln = 1;
     this->cur_col = 0;
     this->errinf;
