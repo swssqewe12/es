@@ -15,6 +15,10 @@ class Lexer
         FILE* file;
         bool notEOF;
         char c;
+        const char* cur_fn;
+        unsigned int cur_ln;
+        unsigned char cur_col;
+        ErrorInfo errinf;
 
         void advance();
 };

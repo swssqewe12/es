@@ -1,10 +1,15 @@
 #include <ctype.h>
+#include "ErrorInfo.h"
 #include "Lexer.h"
 #include "hstr.h"
 
 Lexer::Lexer(FILE* file)
 {
     this->file = file;
+    this->cur_fn = "script.es";
+    this->cur_ln = 1;
+    this->cur_col = 0;
+    this->errinf;
     advance();
 }
 
@@ -18,26 +23,30 @@ void Lexer::make_tokens(List<Token>& tokens)
         }
         else if (c == '(')
         {
-            *(tokens.push()) = Token(LPAREN, ErrInf(0, 0, "test"));
+            *(tokens.push()) = Token(LPAREN, errinf);
             advance();
         }
         else if (c == ')')
         {
-            *(tokens.push()) = Token(RPAREN, ErrInf(0, 0, "test"));
+            *(tokens.push()) = Token(RPAREN, errinf);
             advance();
         }
         else if (c == ';')
         {
-            *(tokens.push()) = Token(SEMI, ErrInf(0, 0, "test"));
+            *(tokens.push()) = Token(SEMI, errinf);
             advance();
         }
         else if (c == '"')
         {
-            *(tokens.push()) = Token(STRING, make_string(), ErrInf(0, 0, "test"));
+            *(tokens.push()) = Token(STRING, make_string(), errinf);
         }
         else if (isalpha(c))
         {
-            *(tokens.push()) = Token(ID, make_identifier(), ErrInf(0, 0, "test"));
+            *(tokens.push()) = Token(ID, make_identifier(), errinf);
+        }
+        else
+        {
+            RaiseErr(errinf, "Illegal character");
         }
     }
 }
@@ -72,7 +81,16 @@ char* Lexer::make_identifier()
 
 void Lexer::advance()
 {
+    if (c == '\n')
+    {
+        cur_ln++;
+        cur_col = 0;
+    }
+
     int x = fgetc(file);
     notEOF = x != EOF;
     c = (unsigned char) x;
+    cur_col++;
+
+    errinf = ErrInf(cur_ln, cur_col, cur_fn);
 }
