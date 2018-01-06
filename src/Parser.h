@@ -14,6 +14,7 @@ class Parser
         List<Token>& tokens;
         size_t tok_index;
         Token* eat(TokenType tok_type);
+        void eatError(Token* tok, TokenType tok_type);
         ProgramTree* program();
         void statements(List<Statement>& list);
 };

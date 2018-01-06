@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "Interpreter.h"
+#include "ErrorInfo.h"
 
 Interpreter::Interpreter(){}
 
@@ -24,5 +25,12 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
     if (strcmp(node->name->value, "print") == 0)
     {
         puts(node->argument->value);
+    }
+    else
+    {
+        int buffer_size = 15 + strlen(node->name->value) + 1;
+        char* buffer = (char*) malloc(buffer_size);
+        snprintf(buffer, buffer_size, "%s is not defined", node->name->value);
+        RaiseErr(node->name->errinf, buffer);
     }
 }

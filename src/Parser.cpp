@@ -1,4 +1,7 @@
+#include <stdio.h>
+#include <string.h>
 #include "Parser.h"
+#include "ErrorInfo.h"
 
 Parser::Parser(List<Token>& tokens): tokens(tokens)
 {
@@ -14,6 +17,16 @@ Token* Parser::eat(TokenType tok_type)
         tok_index++;
         return tok;
     }
+
+    eatError(tok, tok_type);
+}
+
+void Parser::eatError(Token* tok, TokenType tok_type)
+{
+    int buffer_size = 35 + strlen(TokenTypeStrings[tok_type]) + 1;
+    char* buffer = (char*) malloc(buffer_size);
+    snprintf(buffer, buffer_size, "Invalid syntax\nExpected TokenType::%s", TokenTypeStrings[tok_type]);
+    RaiseErr(tok->errinf, buffer);
 }
 
 ProgramTree* Parser::parse()
