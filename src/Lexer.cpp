@@ -9,14 +9,17 @@ Lexer::Lexer(FILE* file)
     this->cur_fn = "res/script.es";
     this->cur_ln = 1;
     this->cur_col = 0;
-    this->errinf;
     advance();
 }
 
 void Lexer::make_tokens(List<Token>& tokens)
 {
+    ErrorInfo errinf;
+
     while (notEOF)
-    {
+    {  
+        errinf = ErrInf(cur_ln, cur_col, cur_fn);
+
         if (isspace(c))
         {
             advance();
@@ -96,6 +99,4 @@ void Lexer::advance()
     notEOF = x != EOF;
     c = (unsigned char) x;
     cur_col++;
-
-    errinf = ErrInf(cur_ln, cur_col, cur_fn);
 }

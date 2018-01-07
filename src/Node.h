@@ -15,9 +15,15 @@ struct Statement
     void* node;
 };
 
+struct Declaration
+{
+    Token* name;
+};
+
 struct ProgramTree
 {
     List<Statement> statements;
+    List<Declaration> declarations;
 };
 
 struct FuncCallNode
