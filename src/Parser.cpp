@@ -23,9 +23,9 @@ Token* Parser::eat(TokenType tok_type)
 
 void Parser::eatError(Token* tok, TokenType tok_type)
 {
-    int buffer_size = 35 + strlen(TokenTypeStrings[tok_type]) + 1;
+    int buffer_size = 36 + strlen(TokenTypeStrings[tok_type]) + 1;
     char* buffer = (char*) malloc(buffer_size);
-    snprintf(buffer, buffer_size, "Invalid syntax\nExpected TokenType::%s", TokenTypeStrings[tok_type]);
+    snprintf(buffer, buffer_size, "Invalid syntax: Expected Token Type %s", TokenTypeStrings[tok_type]);
     RaiseErr(tok->errinf, buffer);
 }
 

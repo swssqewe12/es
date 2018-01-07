@@ -51,7 +51,7 @@ void Lexer::make_tokens(List<Token>& tokens)
         }
         else
         {
-            RaiseErr(errinf, "Illegal character");
+            RaiseErr(errinf, "Error: Illegal character");
         }
     }
 }
