@@ -3,10 +3,15 @@
 #include "Interpreter.h"
 #include "ErrorInfo.h"
 
-Interpreter::Interpreter(){}
+Interpreter::Interpreter()
+{
+    symbolTable = NULL;
+}
 
 void Interpreter::visit_ProgramTree(ProgramTree* tree)
 {
+    pushSymbolTable(symbolTable);
+    
     for (int i = 0; i < tree->declarations.length; i++)
     {
         Declaration* declaration = tree->declarations.get(i);

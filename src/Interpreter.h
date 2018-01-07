@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Node.h"
+#include "SymbolTable.h"
 
 class Interpreter
 {
@@ -8,5 +9,6 @@ class Interpreter
         Interpreter();
         void visit_ProgramTree(ProgramTree* tree);
     private:
+        SymbolTable* symbolTable;
         void visit_FuncCallNode(FuncCallNode* node);
 };
