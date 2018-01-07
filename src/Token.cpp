@@ -6,7 +6,8 @@ const char* TokenTypeStrings[] = {
     "STRING",
     "LPAREN",
     "RPAREN",
-    "SEMI"
+    "SEMI",
+    "EQ"
 };
 
 Token::Token(enum TokenType type, char* value, ErrorInfo errinf)

@@ -28,9 +28,9 @@ void getFileLine(char* line, size_t line_size, const char* fn, unsigned int ln)
 void RaiseErr(ErrorInfo errinf, const char* msg)
 {
     system("@cls||clear");
-    size_t length = errinf.col - 1;
-    char* spaces[length];
-    memset(spaces, ' ', length);
+    char* spaces = (char*) malloc(errinf.col);
+    memset(spaces, ' ', errinf.col - 1);
+    spaces[errinf.col - 1] = '\0';
     char line[256];
     getFileLine(line, sizeof(line), errinf.fn, errinf.ln);
     printf("An error has occured in \"%s\"\n\nError: %s\nLn:%d  Col:%d\n\n%s\n%s^", errinf.fn, msg, errinf.ln, errinf.col, &line, spaces);
