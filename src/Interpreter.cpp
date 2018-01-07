@@ -7,6 +7,13 @@ Interpreter::Interpreter(){}
 
 void Interpreter::visit_ProgramTree(ProgramTree* tree)
 {
+    for (int i = 0; i < tree->declarations.length; i++)
+    {
+        Declaration* declaration = tree->declarations.get(i);
+
+        printf("NEW DECLARATION -> %s\n", declaration->name->value);
+    }
+
     for (int i = 0; i < tree->statements.length; i++)
     {
         Statement* statement = tree->statements.get(i);
