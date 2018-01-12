@@ -32,7 +32,3 @@ void popSymbolTable(SymbolTable*& symbolTable)
     delete symbolTable;
     symbolTable = parent;
 }
-
-
-
-// This file isn't neccessarrryyyyyy right now!

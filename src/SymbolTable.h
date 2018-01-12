@@ -1,5 +1,6 @@
 #pragma once
 #include <map>
+#include "Variable.h"
 
 struct map_charptr
 {
@@ -10,7 +11,7 @@ struct SymbolTable
 {
     int depth;
     SymbolTable* parent;
-    std::map<char*, int, map_charptr> symbols;
+    std::map<char*, Variable*, map_charptr> symbols;
 };
 
 extern void pushSymbolTable(SymbolTable*& symbolTable);
