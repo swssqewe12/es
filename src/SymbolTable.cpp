@@ -1,5 +1,12 @@
 #include <cstddef>
+#include <string.h>
+#include <map>
 #include "SymbolTable.h"
+
+bool map_charptr::operator()(const char* a, const char* b)
+{
+    return strcmp(a, b) < 0;
+}
 
 void pushSymbolTable(SymbolTable*& symbolTable)
 {
