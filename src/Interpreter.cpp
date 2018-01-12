@@ -17,6 +17,8 @@ void Interpreter::visit_ProgramTree(ProgramTree* tree)
         Declaration* declaration = tree->declarations.get(i);
 
         printf("NEW DECLARATION -> %s\n", declaration->name->value);
+        symbolTable->symbols[declaration->name->value] = 0;
+        printf("Value.. %d\n", symbolTable->symbols[declaration->name->value]);
     }
 
     for (int i = 0; i < tree->statements.length; i++)
