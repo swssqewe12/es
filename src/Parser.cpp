@@ -66,17 +66,35 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
         
         if (tryeat(LPAREN))
         {
-            Token* str_tok = eat(STRING);
-            eat(RPAREN);
-            eat(SEMI);
-
             FuncCallNode* node = new FuncCallNode();
             node->name     = id_tok;
-            node->argument = str_tok;
 
             Statement* statement = statements.push();
-            statement->type = FUNC_CALL;
+            statement->type = StatementType::FUNC_CALL;
             statement->node = node;
+
+            Token* tok;
+            Expression arg;
+
+            if (tok = tryeat(STRING))
+            {
+                arg.type = ExprType::STRING;
+                arg.node = tok;
+            }
+            else if (tok = tryeat(ID))
+            {
+                arg.type = ExprType::VARIABLE;
+                arg.node = tok;
+            }
+            else
+            {
+                tok_index++;
+                RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected Token Type STRING or ID");
+            }
+            
+            node->argument = arg;
+            eat(RPAREN);
+            eat(SEMI);
         }
         else if(strcmp(id_tok->value, "var") == 0)
         {

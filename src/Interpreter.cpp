@@ -15,10 +15,7 @@ void Interpreter::visit_ProgramTree(ProgramTree* tree)
     for (int i = 0; i < tree->declarations.length; i++)
     {
         Declaration* declaration = tree->declarations.get(i);
-
-        printf("NEW DECLARATION -> %s\n", declaration->name->value);
         symbolTable->symbols[declaration->name->value] = NULL;
-        printf("Value.. %d\n", symbolTable->symbols[declaration->name->value]);
     }
 
     for (int i = 0; i < tree->statements.length; i++)
@@ -27,7 +24,7 @@ void Interpreter::visit_ProgramTree(ProgramTree* tree)
 
         switch (statement->type)
         {
-            case FUNC_CALL:
+            case StatementType::FUNC_CALL:
                 visit_FuncCallNode((FuncCallNode*) statement->node);
             break;
         }
@@ -38,7 +35,15 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
 {
     if (strcmp(node->name->value, "print") == 0)
     {
-        puts(node->argument->value);
+        switch (node->argument.type)
+        {
+            case ExprType::STRING:
+                puts(((Token*) node->argument.node)->value);
+            break;
+            case ExprType::VARIABLE:
+                puts("Hohoho");
+            break;
+        }
     }
     else
     {
