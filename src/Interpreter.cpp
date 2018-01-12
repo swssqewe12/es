@@ -41,7 +41,15 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
                 puts(((Token*) node->argument.node)->value);
             break;
             case ExprType::VARIABLE:
-                puts("Hohoho");
+                Token* name = (Token*) node->argument.node;
+                auto it = symbolTable->symbols.find(name->value);
+                if (it != symbolTable->symbols.end())
+                    if (it->second == NULL)
+                        printf("null");
+                    else
+                        printf("has value..");
+                else
+                    printf("Lol not defined.");
             break;
         }
     }
