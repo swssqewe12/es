@@ -43,9 +43,9 @@ Token* Parser::tryeat(TokenType tok_type)
 
 void Parser::eatError(Token* tok, TokenType tok_type)
 {
-    int buffer_size = 36 + strlen(TokenTypeStrings[tok_type]) + 1;
+    int buffer_size = 25 + strlen(TokenTypeStrings[tok_type]) + 1;
     char* buffer = (char*) malloc(buffer_size);
-    snprintf(buffer, buffer_size, "Invalid Syntax: Expected Token Type %s", TokenTypeStrings[tok_type]);
+    snprintf(buffer, buffer_size, "Invalid Syntax: Expected %s", TokenTypeStrings[tok_type]);
     RaiseErr(tok->errinf, buffer);
 }
 
@@ -85,7 +85,7 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
         else
         {
             tok_index++;
-            RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected different Token Type");
+            RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected identifier");
         }
     }
 }
@@ -117,7 +117,7 @@ void Parser::statement(Statement* s)
     else
     {
         tok_index++;
-        RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected Token Type STRING or ID");
+        RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected string or identifier");
     }
     
     node->argument = arg;

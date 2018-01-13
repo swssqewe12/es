@@ -2,13 +2,13 @@
 #include "Token.h"
 
 const char* TokenTypeStrings[] = {
-    "ID",
-    "STRING",
-    "LPAREN",
-    "RPAREN",
-    "SEMI",
-    "EQ",
-    "DOT"
+    "identifier",
+    "string",
+    "'('",
+    "')'",
+    "';'",
+    "'='",
+    "'.'"
 };
 
 Token::Token(enum TokenType type, char* value, ErrorInfo errinf)
