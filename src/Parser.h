@@ -21,5 +21,6 @@ class Parser
         ProgramTree* program();
         void statements(List<Statement>& list, List<Declaration>& declarations);
         void statement(Statement* statement);
+        List<Expression>* passedArguments();
         void variableNameLink(VariableNameLink* varnl);
 };

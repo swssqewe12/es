@@ -8,7 +8,8 @@ const char* TokenTypeStrings[] = {
     "')'",
     "';'",
     "'='",
-    "'.'"
+    "'.'",
+    "','"
 };
 
 Token::Token(enum TokenType type, char* value, ErrorInfo errinf)

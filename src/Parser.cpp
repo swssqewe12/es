@@ -100,31 +100,52 @@ void Parser::statement(Statement* s)
     node->varnl = varnl;
     s->node = node;
     Expression arg;
-    eat(LPAREN);
-
-    if (Token* str_tok = tryeat(STRING))
-    {
-        arg.type = ExprType::STRING;
-        arg.node = str_tok;
-    }
-    else if (tokens.get(tok_index)->type == ID)
-    {
-        VariableNameLink* varnl = new VariableNameLink();
-        variableNameLink(varnl);
-        arg.type = ExprType::VARIABLE;
-        arg.node = (void*) varnl;
-    }
-    else
-    {
-        tok_index++;
-        RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected string or identifier");
-    }
     
-    node->args = makeArgumentList(1);
-    node->args->set(0, arg);
-    
-    eat(RPAREN);
+    node->args = passedArguments();
+    //node->args->set(0, arg);
     eat(SEMI);
+}
+
+List<Expression>* Parser::passedArguments()
+{
+    eat(LPAREN);
+    bool comma_state = false;
+    Token* tok;
+    List<Expression>* args = new List<Expression>();
+
+    while (tokens.get(tok_index)->type != RPAREN)
+    {
+        if (comma_state)
+        {
+            eat(COMMA);
+        }
+
+        Expression arg;
+
+        if (Token* str_tok = tryeat(STRING))
+        {
+            arg.type = ExprType::STRING;
+            arg.node = str_tok;
+        }
+        else if (tokens.get(tok_index)->type == ID)
+        {
+            VariableNameLink* varnl = new VariableNameLink();
+            variableNameLink(varnl);
+            arg.type = ExprType::VARIABLE;
+            arg.node = varnl;
+        }
+        else
+        {
+            tok_index++;
+            RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected string or identifier");
+        }
+
+        args->push(arg);
+        comma_state = true;
+    }
+
+    eat();
+    return args;
 }
 
 void Parser::variableNameLink(VariableNameLink* varnl)

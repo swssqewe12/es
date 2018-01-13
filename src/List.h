@@ -11,7 +11,7 @@ class List
         Type* arr = NULL;
     public:
         int length;
-        int step = 10;
+        int step = 8;
 
         List()
         {

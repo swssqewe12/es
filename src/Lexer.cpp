@@ -49,6 +49,10 @@ void Lexer::make_tokens(List<Token>& tokens)
             *(tokens.push()) = Token(DOT, errinf);
             advance();
         }
+        else if (c == ',')
+        {
+            *(tokens.push()) = Token(COMMA, errinf);
+        }
         else if (c == '"')
         {
             *(tokens.push()) = Token(STRING, make_string(), errinf);
