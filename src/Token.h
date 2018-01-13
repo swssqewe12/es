@@ -9,7 +9,8 @@ enum TokenType
     LPAREN,
     RPAREN,
     SEMI,
-    EQ
+    EQ,
+    DOT
 };
 
 extern const char* TokenTypeStrings[];

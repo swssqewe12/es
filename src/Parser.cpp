@@ -79,38 +79,8 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
         }
         else if (current_tok->type == ID)
         {
-            Token* id_tok = eat();
-            FuncCallNode* node = new FuncCallNode();
-            node->name     = id_tok;
-
-            Statement* statement = statements.push();
-            statement->type = StatementType::FUNC_CALL;
-            statement->node = node;
-
-            Token* tok;
-            Expression arg;
-
-            eat(LPAREN);
-
-            if (tok = tryeat(STRING))
-            {
-                arg.type = ExprType::STRING;
-                arg.node = tok;
-            }
-            else if (tok = tryeat(ID))
-            {
-                arg.type = ExprType::VARIABLE;
-                arg.node = tok;
-            }
-            else
-            {
-                tok_index++;
-                RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected Token Type STRING or ID");
-            }
-            
-            node->argument = arg;
-            eat(RPAREN);
-            eat(SEMI);
+            Statement* s = statements.push();
+            statement(s);
         }
         else
         {
@@ -118,4 +88,46 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
             RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected different Token Type");
         }
     }
+}
+
+void Parser::statement(Statement* s)
+{
+    VariableNameLink varnl;
+    variableNameLink(&varnl);
+
+    s->type = StatementType::FUNC_CALL;
+    FuncCallNode* node = new FuncCallNode();
+    node->varnl = varnl;
+    s->node = node;
+    Expression arg;
+    eat(LPAREN);
+
+    if (Token* str_tok = tryeat(STRING))
+    {
+        arg.type = ExprType::STRING;
+        arg.node = str_tok;
+    }
+    else if (tokens.get(tok_index)->type == ID)
+    {
+        VariableNameLink* varnl = new VariableNameLink();
+        variableNameLink(varnl);
+        arg.type = ExprType::VARIABLE;
+        arg.node = (void*) varnl;
+    }
+    else
+    {
+        tok_index++;
+        RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected Token Type STRING or ID");
+    }
+    
+    node->argument = arg;
+    eat(RPAREN);
+    eat(SEMI);
+}
+
+void Parser::variableNameLink(VariableNameLink* varnl)
+{
+    varnl->tok = eat(ID);
+    if (Token* tok = tryeat(DOT))
+        variableNameLink(varnl->next);
 }

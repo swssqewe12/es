@@ -44,6 +44,11 @@ void Lexer::make_tokens(List<Token>& tokens)
             *(tokens.push()) = Token(EQ, errinf);
             advance();
         }
+        else if (c == '.')
+        {
+            *(tokens.push()) = Token(DOT, errinf);
+            advance();
+        }
         else if (c == '"')
         {
             *(tokens.push()) = Token(STRING, make_string(), errinf);

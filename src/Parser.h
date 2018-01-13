@@ -3,6 +3,7 @@
 #include "List.h"
 #include "Token.h"
 #include "Node.h"
+#include "VariableNameLink.h"
 
 class Parser
 {
@@ -19,4 +20,6 @@ class Parser
         void eatError(Token* tok, TokenType tok_type);
         ProgramTree* program();
         void statements(List<Statement>& list, List<Declaration>& declarations);
+        void statement(Statement* statement);
+        void variableNameLink(VariableNameLink* varnl);
 };

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "Interpreter.h"
 #include "ErrorInfo.h"
+#include "VariableNameLink.h"
 
 Interpreter::Interpreter()
 {
@@ -33,7 +34,7 @@ void Interpreter::visit_ProgramTree(ProgramTree* tree)
 
 void Interpreter::visit_FuncCallNode(FuncCallNode* node)
 {
-    if (strcmp(node->name->value, "print") == 0)
+    if (strcmp(node->varnl.tok->value, "print") == 0)
     {
         switch (node->argument.type)
         {
@@ -41,7 +42,7 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
                 puts(((Token*) node->argument.node)->value);
             break;
             case ExprType::VARIABLE:
-                Token* name = (Token*) node->argument.node;
+                Token* name = ((VariableNameLink*) node->argument.node)->tok;
                 auto it = symbolTable->symbols.find(name->value);
                 if (it != symbolTable->symbols.end())
                     if (it->second == NULL)
@@ -55,9 +56,9 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
     }
     else
     {
-        int buffer_size = 15 + strlen(node->name->value) + 1;
+        int buffer_size = 15 + strlen(node->varnl.tok->value) + 1;
         char* buffer = (char*) malloc(buffer_size);
-        snprintf(buffer, buffer_size, "%s is not defined", node->name->value);
-        RaiseErr(node->name->errinf, buffer);
+        snprintf(buffer, buffer_size, "%s is not defined", node->varnl.tok->value);
+        RaiseErr(node->varnl.tok->errinf, buffer);
     }
 }
