@@ -120,7 +120,9 @@ void Parser::statement(Statement* s)
         RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected string or identifier");
     }
     
-    node->argument = arg;
+    node->args = makeArgumentList(1);
+    node->args->set(0, arg);
+    
     eat(RPAREN);
     eat(SEMI);
 }

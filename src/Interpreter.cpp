@@ -36,13 +36,15 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
 {
     if (strcmp(node->varnl.tok->value, "print") == 0)
     {
-        switch (node->argument.type)
+        Expression* arg = node->args->get(0);
+
+        switch (arg->type)
         {
             case ExprType::STRING:
-                puts(((Token*) node->argument.node)->value);
+                puts(((Token*) arg->node)->value);
             break;
             case ExprType::VARIABLE:
-                Token* name = ((VariableNameLink*) node->argument.node)->tok;
+                Token* name = ((VariableNameLink*) arg->node)->tok;
                 auto it = symbolTable->symbols.find(name->value);
                 if (it != symbolTable->symbols.end())
                     if (it->second == NULL)
