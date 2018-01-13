@@ -8,6 +8,13 @@ Parser::Parser(List<Token>& tokens): tokens(tokens)
     this->tok_index = 0;
 }
 
+Token* Parser::eat()
+{
+    Token* tok = tokens.get(tok_index);
+    tok_index++;
+    return tok;
+}
+
 Token* Parser::eat(TokenType tok_type)
 {
     Token* tok = tokens.get(tok_index);
@@ -62,10 +69,17 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
 {
     while (tok_index < tokens.length)
     {
-        Token* id_tok = eat(ID);
-        
-        if (tryeat(LPAREN))
+        Token* current_tok = tokens.get(tok_index);
+        if (current_tok->type == ID && strcmp(current_tok->value, "var") == 0)
         {
+            eat();
+            Declaration* declaration = declarations.push();
+            declaration->name = eat(ID);
+            eat(SEMI);
+        }
+        else if (current_tok->type == ID)
+        {
+            Token* id_tok = eat();
             FuncCallNode* node = new FuncCallNode();
             node->name     = id_tok;
 
@@ -75,6 +89,8 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
 
             Token* tok;
             Expression arg;
+
+            eat(LPAREN);
 
             if (tok = tryeat(STRING))
             {
@@ -96,18 +112,10 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
             eat(RPAREN);
             eat(SEMI);
         }
-        else if(strcmp(id_tok->value, "var") == 0)
-        {
-            Token* var_tok = eat(ID);
-            eat(SEMI);
-
-            Declaration* declaration = declarations.push();
-            declaration->name = var_tok;
-        }
         else
         {
             tok_index++;
-            RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected Token Type LPAREN");
+            RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected different Token Type");
         }
     }
 }
