@@ -102,7 +102,6 @@ void Parser::statement(Statement* s)
     Expression arg;
     
     node->args = passedArguments();
-    //node->args->set(0, arg);
     eat(SEMI);
 }
 

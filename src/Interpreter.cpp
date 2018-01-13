@@ -36,25 +36,12 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
 {
     if (strcmp(node->varnl.tok->value, "print") == 0)
     {
-        Expression* arg = node->args->get(0);
-
-        switch (arg->type)
-        {
-            case ExprType::STRING:
-                puts(((Token*) arg->node)->value);
-            break;
-            case ExprType::VARIABLE:
-                Token* name = ((VariableNameLink*) arg->node)->tok;
-                auto it = symbolTable->symbols.find(name->value);
-                if (it != symbolTable->symbols.end())
-                    if (it->second == NULL)
-                        printf("null");
-                    else
-                        printf("has value..");
-                else
-                    printf("Lol not defined.");
-            break;
-        }
+        visit_PrintFuncCallNode(node);
+    }
+    else if (strcmp(node->varnl.tok->value, "println") == 0)
+    {
+        visit_PrintFuncCallNode(node);
+        putchar('\n');
     }
     else
     {
@@ -62,5 +49,34 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
         char* buffer = (char*) malloc(buffer_size);
         snprintf(buffer, buffer_size, "%s is not defined", node->varnl.tok->value);
         RaiseErr(node->varnl.tok->errinf, buffer);
+    }
+}
+
+void Interpreter::visit_PrintFuncCallNode(FuncCallNode* node)
+{
+    for (int i = 0; i < node->args->length; i++)
+    {
+        Expression* arg = node->args->get(i);
+
+        switch (arg->type)
+        {
+            case ExprType::STRING:
+                fputs(((Token*) arg->node)->value, stdout);
+            break;
+            case ExprType::VARIABLE:{
+                Token* name = ((VariableNameLink*) arg->node)->tok;
+                auto it = symbolTable->symbols.find(name->value);
+                if (it != symbolTable->symbols.end())
+                    if (it->second == NULL)
+                        fputs("null", stdout);
+                    else
+                        printf("has value..");
+                else
+                    printf("Lol not defined.");
+            }break;
+            default:
+                fputs("!ERR!", stdout);
+            break;
+        }
     }
 }

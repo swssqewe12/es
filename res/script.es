@@ -1,3 +1,4 @@
-print("Hello, World!");
-print(i);
+println("Hello, World!", " ", i);
+print("A");
+print("B");
 var i;

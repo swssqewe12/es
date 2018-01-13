@@ -11,4 +11,5 @@ class Interpreter
     private:
         SymbolTable* symbolTable;
         void visit_FuncCallNode(FuncCallNode* node);
+        void visit_PrintFuncCallNode(FuncCallNode* node);
 };
