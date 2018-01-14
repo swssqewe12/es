@@ -72,12 +72,49 @@ void Lexer::make_tokens(List<Token>& tokens)
 char* Lexer::make_string()
 {
     advance();
+    int state;
+    // 0 - default | 1 - backslash
     hstr str;
 
-    while (notEOF && c != '"')
+    while (notEOF && (c != '"' || state != 0))
     {
-        str.append(c);
-        advance();
+        if (state == 0)
+        {
+            if (c == '\\')
+            {
+                state = 1;
+                advance();
+                continue;
+            }
+            
+            str.append(c);
+            advance();
+        }
+        else if (state == 1)
+        {
+            state = 0;
+
+            switch (c)
+            {
+                case 'n':
+                    str.append('\n');
+                break;
+                case 'r':
+                    str.append('\r');
+                break;
+                case 't':
+                    str.append('\t');
+                break;
+                case 'b':
+                    str.append('\b');
+                break;
+                default:
+                    str.append(c);
+                break;
+            }
+
+            advance();
+        }
     }
 
     advance();

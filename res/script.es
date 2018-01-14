@@ -1,4 +1,1 @@
-println("Hello, World!", " ", i);
-print("A");
-print("B");
-var i;
+println("Fixing\nMultiple Lines\nand\t\ttabs!\n\nAnd while we're at it \"quotes\". Let's try \\ too!");
