@@ -67,6 +67,18 @@ void hstr::append(const hstr& h_str)
     }
 }
 
+void hstr::append(const char* c_str)
+{
+    int c_str_len = strlen(c_str);
+    int len = length + c_str_len;
+    int last_cap = cap;
+    cap = roundUp(len, step);
+    if (last_cap != cap)
+        chars = (char*) realloc(chars, cap);
+    memcpy(chars + length, c_str, c_str_len);
+    length = len;
+}
+
 void hstr::append(char* c_str)
 {
     int c_str_len = strlen(c_str);

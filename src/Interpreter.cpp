@@ -3,6 +3,7 @@
 #include "Interpreter.h"
 #include "ErrorInfo.h"
 #include "VariableNameLink.h"
+#include "hstr.h"
 
 Interpreter::Interpreter()
 {
@@ -34,6 +35,7 @@ void Interpreter::visit_ProgramTree(ProgramTree* tree)
 
 void Interpreter::visit_FuncCallNode(FuncCallNode* node)
 {
+    // TODO in far future -- my own strcmp function that if it doesn't match a string, it can start comparing the other string half way without having to start again!
     if (strcmp(node->varnl.tok->value, "print") == 0)
     {
         visit_PrintFuncCallNode(node);
@@ -41,6 +43,15 @@ void Interpreter::visit_FuncCallNode(FuncCallNode* node)
     else if (strcmp(node->varnl.tok->value, "println") == 0)
     {
         visit_PrintFuncCallNode(node);
+        putchar('\n');
+    }
+    else if (strcmp(node->varnl.tok->value, "printf") == 0)
+    {
+        visit_PrintfFuncCallNode(node);
+    }
+    else if(strcmp(node->varnl.tok->value, "printfln") == 0)
+    {
+        visit_PrintfFuncCallNode(node);
         putchar('\n');
     }
     else
@@ -79,4 +90,93 @@ void Interpreter::visit_PrintFuncCallNode(FuncCallNode* node)
             break;
         }
     }
+}
+
+void Interpreter::visit_PrintfFuncCallNode(FuncCallNode* node)
+{
+
+    if (node->args->length == 0)
+        return;
+
+    if (node->args->length == 1)
+    {
+        Expression* arg = node->args->get(0);
+        if (arg->type == ExprType::STRING)
+            fputs(((Token*)arg->node)->value, stdout);
+        return;
+    }
+
+    Expression* arg = node->args->get(0);
+    if (arg->type != ExprType::STRING)
+        return;
+
+    hstr str;
+    int curr_arg = 0;
+    char* c = ((Token*)arg->node)->value;
+    int state = 0;
+    // 0: default | 1: percentage
+
+    while (*c != '\0')
+    {
+        if (state == 0)
+        {
+            if (*c == '%')
+            {
+                state = 1;
+                c++;
+                continue;
+            }
+
+            str.append(*c);
+            c++;
+        }
+        else if (state == 1)
+        {
+            state = 0;
+            curr_arg++;
+
+            if (curr_arg < node->args->length)
+            {
+                Expression* arg = node->args->get(curr_arg);
+                switch (*c)
+                {
+                    case 's':
+                        switch (arg->type)
+                        {
+                            case ExprType::STRING:
+                                str.append(((Token*) arg->node)->value);
+                            break;
+                        }
+                    break;
+                    case 'd':
+                        switch (arg->type)
+                        {
+                            case ExprType::STRING:
+                                str.append("unf"); //unformattable
+                            break;
+                            case ExprType::VARIABLE:
+                                str.append("null");
+                            break;
+                            default:
+                                str.append("unf");
+                            break;
+                        }
+                    break;
+                    default:
+                        str.append('%');
+                        str.append(*c);
+                    break;
+                }
+            }
+            else
+            {
+                str.append('%');
+                str.append(*c);
+            }
+
+            c++;
+        }
+    }
+
+    fputs(str.c_str(), stdout);
 }

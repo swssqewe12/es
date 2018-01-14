@@ -46,6 +46,11 @@ class List
             return arr + index;
         }
 
+        bool has(int index)
+        {
+            return index >= 0 && index < length;
+        }
+
         ~List()
         {
             if (arr)

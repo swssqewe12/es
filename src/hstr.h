@@ -14,6 +14,7 @@ class hstr
         hstr(char* c_str);
         hstr(char c);
         void append(const hstr& h_str);
+        void append(const char* c_str);
         void append(char* c_str);
         void append(char c);
         void shrink_unused();

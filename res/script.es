@@ -1,1 +1,2 @@
-println("Fixing\nMultiple Lines\nand\t\ttabs!\n\nAnd while we're at it \"quotes\". Let's try \\ too!");
+var num;
+printf("%s, World!\nMy number is %d", "Hello", num);
