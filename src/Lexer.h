@@ -11,6 +11,7 @@ class Lexer
         void make_tokens(List<Token>& tokens);
         char* make_string();
         char* make_identifier();
+        char* make_number();
     private:
         FILE* file;
         bool notEOF;

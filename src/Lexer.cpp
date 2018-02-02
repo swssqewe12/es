@@ -62,6 +62,10 @@ void Lexer::make_tokens(List<Token>& tokens)
         {
             *(tokens.push()) = Token(ID, make_identifier(), errinf);
         }
+        else if (c >= '0' && c <= '9')
+        {
+            *(tokens.push()) = Token(NUMBER, make_number(), errinf);
+        }
         else
         {
             RaiseErr(errinf, "Error: Illegal character");
@@ -126,6 +130,19 @@ char* Lexer::make_identifier()
     hstr result;
 
     while (notEOF && isalpha(c))
+    {
+        result.append(c);
+        advance();
+    }
+
+    return result.c_str();
+}
+
+char* Lexer::make_number()
+{
+    hstr result;
+
+    while (notEOF && c >= '0' && c <= '9')
     {
         result.append(c);
         advance();

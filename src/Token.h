@@ -11,7 +11,8 @@ enum TokenType
     SEMI,
     EQ,
     DOT,
-    COMMA
+    COMMA,
+    NUMBER
 };
 
 extern const char* TokenTypeStrings[];
