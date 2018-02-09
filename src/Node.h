@@ -9,7 +9,8 @@ struct Expression;
 
 enum class StatementType
 {
-    FUNC_CALL
+    FUNC_CALL,
+    VAR_ASSIGN
 };
 
 enum class ExprType
@@ -50,3 +51,9 @@ struct FuncCallNode
     List<Expression>* args;
     // KeywordArgumentList kwargs;
 };
+
+struct VarAssignNode
+{
+    VariableNameLink varnl;
+    Variable* value;
+}
