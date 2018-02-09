@@ -75,17 +75,7 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
             eat();
             Declaration* declaration = declarations.push();
             declaration->name = eat(ID);
-
-            if (!tryeat(SEMI))
-            {
-                eat(EQ);
-                Token* num = eat(NUMBER);
-                Statement* statement = statements.push();
-                statement->type = VAR_ASSING;
-                statement->value = VarAssignNode();
-                statement->value->varln = VariableNameLink();
-                eat(SEMI);
-            }
+            eat(SEMI);
         }
         else if (current_tok->type == ID)
         {
@@ -94,7 +84,7 @@ void Parser::statements(List<Statement>& statements, List<Declaration>& declarat
         }
         else
         {
-            //tok_index++;
+            tok_index++;
             RaiseErr(tokens.get(tok_index)->errinf, "Invalid Syntax: Expected identifier");
         }
     }

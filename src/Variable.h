@@ -2,7 +2,7 @@
 
 enum VariableType
 {
-    INT
+    INTEGER
 };
 
 struct Variable
